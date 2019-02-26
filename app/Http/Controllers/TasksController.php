@@ -13,7 +13,7 @@ class TasksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // getでmessages/にアクセスされた場合の「一覧表示処理」
+    // ログインしているかしていないかを判定して、見せるviewを変えるAuth
     public function index()
     {
         $tasks = Task::all();
@@ -21,6 +21,10 @@ class TasksController extends Controller
         return view('tasks.index', [
             'tasks' => $tasks,
         ]);
+        
+        Route::get('/', function () {
+        return view('welcome');
+        });
     }
 
     /**
