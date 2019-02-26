@@ -1,3 +1,5 @@
+@extends('layouts.app')
+
 @section('content')
     @if (Auth::check())
         {{ Auth::user()->name }}

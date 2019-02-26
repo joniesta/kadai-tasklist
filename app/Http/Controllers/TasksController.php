@@ -17,14 +17,15 @@ class TasksController extends Controller
     public function index()
     {
         $tasks = Task::all();
-
+        
+        if (\Auth::check()) {
         return view('tasks.index', [
             'tasks' => $tasks,
         ]);
+        }
         
-        Route::get('/', function () {
         return view('welcome');
-        });
+    
     }
 
     /**
@@ -71,24 +72,29 @@ class TasksController extends Controller
     public function show($id)
     {
         $task = Task::find($id);
-
+        if (\Auth::id() === $task->user_id) {
         return view('tasks.show', [
             'task' => $task,
         ]);
-    }
+        }
+        
+        return redirect('/');
+    } 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-     public function edit($id)
+    public function edit($id)
     {
         $task = Task::find($id);
-
+        if (\Auth::id() === $task->user_id) {
         return view('tasks.edit', [
             'task' => $task,
         ]);
+        }
+        return redirect('/');
     }
 
     /**
@@ -121,7 +127,10 @@ class TasksController extends Controller
     public function destroy($id)
     {
         $task = Task::find($id);
-        $task->delete();
+        if (\Auth::id() === $task->user_id) {
+            $task->delete();
+        }
+
 
         return redirect('/');
     }
